@@ -53,6 +53,10 @@ function getTileDetail() {
           w: widthStartPoint + c * tileSize + tileSize / 2,
           h: heightStartPoint + r * tileSize + tileSize / 2,
         },
+        position: {
+            row: r,
+            col: c
+        }
       });
     }
   }
