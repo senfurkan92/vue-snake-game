@@ -54,8 +54,8 @@ function getTileDetail() {
           h: heightStartPoint + r * tileSize + tileSize / 2,
         },
         position: {
-            row: r,
-            col: c
+            col: c,
+            row: r
         }
       });
     }
