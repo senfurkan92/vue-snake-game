@@ -1,26 +1,15 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { useTileStore } from "../stores/tileStore";
-import { useSnakeStore } from "../stores/snakeStore";
+import { usePreyStore } from "../stores/preyStore";
 
-const snakeStore = useSnakeStore();
+const preyStore = usePreyStore();
 const tileStore = useTileStore();
 
-const preyPoint = ref()
-
-function putPrey() {
-  if (preyPoint.value) return
-
-  let availablePoints = tileStore.points.filter(x => !snakeStore.points.some(xx => x.position.col == xx.position.col && x.position.row == xx.position.row))
-
-  if (availablePoints.length > 0) {
-    const randomIndex = Math.floor(Math.random() * availablePoints.length);
-    preyPoint.value = availablePoints[randomIndex];
-  }
-}
-
 onMounted(() => {
-  putPrey()
+  setTimeout(() => {
+    preyStore.putPrey()
+  }, 1100)
 })
 
 onUnmounted(() => {
@@ -29,11 +18,11 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div v-if="preyPoint" class="prey" :style="{
-    height: `${tileStore.tileSize * 0.7}px`,
-    width: `${tileStore.tileSize * 0.7}px`,
-    left: `${preyPoint.center.w}px`,
-    top: `${preyPoint.center.h}px`,
+  <div v-if="preyStore.point" class="prey" :style="{
+    height: `${tileStore.tileSize * 0.5}px`,
+    width: `${tileStore.tileSize * 0.5}px`,
+    left: `${preyStore.point.center.w}px`,
+    top: `${preyStore.point.center.h}px`,
   }"></div>
 </template>
 
@@ -44,5 +33,17 @@ onUnmounted(() => {
   border-radius: 100%;
   transform: translate(-50%, -50%);
   border: 0 solid black;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.6;
+  }
 }
 </style>

@@ -11,7 +11,7 @@ function getTileDetail() {
   const borderSpaceWitdhConstant = width / spacePercent;
   const borderSpaceHeightConstant = height / spacePercent;
 
-  const tileCount = 488;
+  const tileCount = 50 // 488;
   const borderWL = borderSpaceWitdhConstant;
   const borderWR = borderSpaceWitdhConstant;
   const borderHT = borderSpaceHeightConstant * 2.5;

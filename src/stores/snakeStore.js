@@ -1,16 +1,21 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { useTileStore } from "./tileStore";
+import { usePreyStore } from "./preyStore";
 
 export const useSnakeStore = defineStore("snake", () => {
   const tileStore = useTileStore();
+  const preyStore = usePreyStore();
 
+  const counter = ref(0);
   const points = ref([...tileStore.points.slice(0, 3).reverse()]);
+  const eatenMoments = ref([]);
   const direction = ref(0);
+  let intervalId = null;
 
   const continuousMovement = () => {
     setTimeout(() => {
-      setInterval(() => {
+      intervalId = setInterval(() => {
         let { col, row } = points.value[0].position;
 
         if (direction.value == 0) col++;
@@ -22,13 +27,49 @@ export const useSnakeStore = defineStore("snake", () => {
           (x) => x.position.col == col && x.position.row == row
         );
 
-        if (nextPoint) {
-          points.value = [
-            nextPoint,
-            ...points.value.slice(0, points.value.length - 1),
-          ];
+        if (!nextPoint) {
+          alert("game over")
+          clearInterval(intervalId);
+          return;
         }
-      }, 100);
+
+        if (points.value.some(x => x.position.col == nextPoint.position.col && x.position.row == nextPoint.position.row)) {
+          alert("game over")
+          clearInterval(intervalId);
+          return;
+        }
+
+        points.value = [
+          nextPoint,
+          ...points.value.slice(0, points.value.length - 1),
+        ];
+
+        counter.value += 1;
+
+        if (preyStore.point) {
+          if (
+            nextPoint.position.col == preyStore.point.position.col &&
+            nextPoint.position.row == preyStore.point.position.row
+          ) {
+            eatenMoments.value.push({
+              moment: counter.value + points.value.length - 1,
+              point: nextPoint,
+            });
+
+            preyStore.beEaten();
+          }
+        }
+
+        if (eatenMoments.value.length > 0 || eatenMoments.value.some((x) => x.moment == counter.value)) {
+          const eatenPoint = eatenMoments.value.find(
+            (x) => x.moment == counter.value
+          ).point;
+
+          points.value = [...points.value, eatenPoint];
+
+          eatenMoments.value = eatenMoments.value.filter(x => x.moment != counter.value)
+        }
+      }, 500);
     }, 1000);
   };
 
@@ -51,7 +92,10 @@ export const useSnakeStore = defineStore("snake", () => {
       direction.value = 90;
     } else if (realDirection != 0 && (e.key === "ArrowLeft" || e.key === "a")) {
       direction.value = 180;
-    } else if (realDirection != 90 && (e.key === "ArrowDown" || e.key === "s")) {
+    } else if (
+      realDirection != 90 &&
+      (e.key === "ArrowDown" || e.key === "s")
+    ) {
       direction.value = 270;
     }
   };
