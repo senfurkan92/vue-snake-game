@@ -12,29 +12,61 @@ function getSnakePart(point) {
   let direction = ''
   let part = ''
 
-  if (index === 0 || index === snakeStore.points.length-1) {
-    part = index === 0 ? 'head' : 'tail'
+  if (index === 0) {
+    part = 'head'
 
     if (realDirection == 0) direction = 'r'
     else if (realDirection == 90) direction = 'u'
     else if (realDirection == 180) direction = 'l'
     else if (realDirection == 270) direction = 'd'
+  
+  } else if (index === snakeStore.points.length - 1) {
+    part = 'tail'
 
+    let fp = snakeStore.points.at(index - 1)
+
+    if (point.position.row == fp.position.row) {
+      if (point.position.col > fp.position.col) direction = 'l'
+      else direction = 'r'
+    } else {
+      if (point.position.row > fp.position.row) direction = 'u'
+      else direction = 'd'
+    }
   } else {
-    let frontPoint = snakeStore.points.at(index - 1)
-    let backPoint = snakeStore.points.at(index + 1)
-    
-    if (backPoint.position.col != frontPoint.position.col && backPoint.position.row != frontPoint.position.row) {
+    let fp = snakeStore.points.at(index - 1)
+    let bp = snakeStore.points.at(index + 1)
+
+    if (bp.position.col != fp.position.col && bp.position.row != fp.position.row) {
       part = 'corner'
 
-      if (backPoint.position.col < frontPoint.position.col && backPoint.position.row < frontPoint.position.row) direction = "rd"
-      else if (backPoint.position.col < frontPoint.position.col && backPoint.position.row > frontPoint.position.row) direction = "ru"
-      else if (backPoint.position.col > frontPoint.position.col && backPoint.position.row < frontPoint.position.row) direction = "ld"
-      else if (backPoint.position.col > frontPoint.position.col && backPoint.position.row > frontPoint.position.row) direction = "lu"
+      if (bp.position.row > fp.position.row && bp.position.col < fp.position.col && point.position.col == bp.position.col && point.position.row == fp.position.row) {
+        direction = 'dr'
+      }
+      else if (bp.position.row < fp.position.row && bp.position.col > fp.position.col && point.position.col == fp.position.col && point.position.row == bp.position.row) {
+        direction = 'ld'
+      }
+      else if (bp.position.row < fp.position.row && bp.position.col > fp.position.col && point.position.col == bp.position.col && point.position.row == fp.position.row) {
+        direction = 'ul'
+      }
+      else if (bp.position.row > fp.position.row && bp.position.col < fp.position.col && point.position.col == fp.position.col && point.position.row == bp.position.row) {
+        direction = 'ru'
+      }
+      else if (bp.position.row < fp.position.row && bp.position.col < fp.position.col && point.position.col == bp.position.col && point.position.row == fp.position.row) {
+        direction = 'ur'
+      }
+      else if (bp.position.row > fp.position.row && bp.position.col > fp.position.col && point.position.col == fp.position.col && point.position.row == bp.position.row) {
+        direction = 'lu'
+      }
+      else if (bp.position.row < fp.position.row && bp.position.col < fp.position.col && point.position.col == fp.position.col && point.position.row == bp.position.row) {
+        direction = 'rd'
+      }
+      else if (bp.position.row > fp.position.row && bp.position.col > fp.position.col && point.position.col == bp.position.col && point.position.row == fp.position.row) {
+        direction = 'dl'
+      }
 
     } else {
       part = 'body'
-      direction = frontPoint.position.row === backPoint.position.row ? "r" : "u"
+      direction = fp.position.row === bp.position.row ? "r" : "u"
     }
   }
   console.log(`/snake/${part}-${direction}.png`)
@@ -62,9 +94,9 @@ onUnmounted(() => {
       left: `${p.center.w}px`,
       top: `${p.center.h}px`,
     }">
-    <img :src="getSnakePart(p)" style="height: 100%; width: 100%; object-fit: contain;">
-  </img>  
-  </div>
+      <img :src="getSnakePart(p)" style="height: 100%; width: 100%; object-fit: contain;">
+      </img>
+    </div>
   </template>
 </template>
 

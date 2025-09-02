@@ -52,7 +52,7 @@ export const useSnakeStore = defineStore("snake", () => {
             nextPoint.position.row == preyStore.point.position.row
           ) {
             eatenMoments.value.push({
-              moment: counter.value + points.value.length - 1,
+              moment: counter.value + points.value.length,
               point: nextPoint,
             });
 
@@ -69,7 +69,7 @@ export const useSnakeStore = defineStore("snake", () => {
 
           eatenMoments.value = eatenMoments.value.filter(x => x.moment != counter.value)
         }
-      }, 500);
+      }, 100);
     }, 1000);
   };
 
