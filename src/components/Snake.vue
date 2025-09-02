@@ -2,9 +2,11 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useTileStore } from "../stores/tileStore";
 import { useSnakeStore } from "../stores/snakeStore";
+import { useGameStore } from "../stores/gameStore";
 
 const snakeStore = useSnakeStore();
 const tileStore = useTileStore();
+const gameStore = useGameStore();
 
 function getSnakePart(point) {
   let realDirection = snakeStore.getRealDirection()
@@ -19,7 +21,7 @@ function getSnakePart(point) {
     else if (realDirection == 90) direction = 'u'
     else if (realDirection == 180) direction = 'l'
     else if (realDirection == 270) direction = 'd'
-  
+
   } else if (index === snakeStore.points.length - 1) {
     part = 'tail'
 
@@ -78,6 +80,13 @@ onMounted(() => {
   snakeStore.continuousMovement()
 
   window.addEventListener("keydown", snakeStore.alterDirection);
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key == "p" || e.key == 'P') {
+      if (gameStore.state == 2) gameStore.setStatePause()
+      else if (gameStore.state == 3) gameStore.setStatePlay()
+    }
+  });
 })
 
 onUnmounted(() => {
@@ -87,6 +96,9 @@ onUnmounted(() => {
 </script>
 
 <template>
+  <div>
+      <b>SCORE:</b> {{ gameStore.score }}
+    </div>
   <template v-for="(p, i) in snakeStore.points" :key="i">
     <div class="snake" :style="{
       height: `${tileStore.tileSize * 1}px`,
@@ -96,6 +108,10 @@ onUnmounted(() => {
     }">
       <img :src="getSnakePart(p)" style="height: 100%; width: 100%; object-fit: contain;">
       </img>
+    </div>
+    <div v-if="gameStore.state == 3" 
+      style="position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);">
+      <h2><i style="text-decoration-line: underline;">PAUSED</i></h2>
     </div>
   </template>
 </template>
