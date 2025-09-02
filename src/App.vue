@@ -2,7 +2,6 @@
 import snake from './components/Snake.vue';
 import tileManager from './components/TileManager.vue';
 import prey from './components/Prey.vue';
-
 </script>
 
 <template>

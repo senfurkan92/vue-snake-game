@@ -60,7 +60,7 @@ export const useSnakeStore = defineStore("snake", () => {
           }
         }
 
-        if (eatenMoments.value.length > 0 || eatenMoments.value.some((x) => x.moment == counter.value)) {
+        if (eatenMoments.value.length > 0 && eatenMoments.value.some((x) => x.moment == counter.value)) {
           const eatenPoint = eatenMoments.value.find(
             (x) => x.moment == counter.value
           ).point;
@@ -100,5 +100,5 @@ export const useSnakeStore = defineStore("snake", () => {
     }
   };
 
-  return { points, direction, continuousMovement, alterDirection };
+  return { points, direction, continuousMovement, alterDirection, getRealDirection };
 });
