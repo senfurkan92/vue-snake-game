@@ -128,11 +128,28 @@ export const useSnakeStore = defineStore("snake", () => {
     }
   };
 
+  const alterDirectionByDegree = (degree) => {
+    if (gameStore.state != 2) return;
+
+    const realDirection = getRealDirection();
+
+    if (realDirection != 180 && degree == 0) {
+      direction.value = 0;
+    } else if (realDirection != 270 && degree == 90) {
+      direction.value = 90;
+    } else if (realDirection != 0 && degree == 180) {
+      direction.value = 180;
+    } else if (realDirection != 90 && degree == 270) {
+      direction.value = 270;
+    }
+  };
+
   return {
     points,
     direction,
     readyToPlay,
     alterDirection,
     getRealDirection,
+    alterDirectionByDegree
   };
 });

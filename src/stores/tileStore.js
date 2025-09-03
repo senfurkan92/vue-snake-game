@@ -8,9 +8,19 @@ export const useTileStore = defineStore("tile", () => {
   const tileSize = ref(null);
   const points = ref(null);
 
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+
+    if (/Tablet|iPad/i.test(ua)) return 'mobile';
+    if (/Mobi|Android/i.test(ua)) return 'mobile';
+    if (window.innerWidth <= 768) return 'mobile';
+    if (window.innerWidth <= 1024) return 'mobile';
+    return 'desktop';
+  }
+
   const setTiles = () => {
     const width = window.innerWidth;
-    const height = window.innerHeight;
+    const height = window.innerHeight - (getDeviceType() == 'mobile' ? 80 : 0);
     const spacePercent = 20;
 
     const borderSpaceWitdhConstant = width / spacePercent;
@@ -39,11 +49,8 @@ export const useTileStore = defineStore("tile", () => {
     const widthStartPoint = Math.round(
       width / 2 - (cols / 2) * tileSize - (widthEven ? tileSize / 2 : 0)
     );
-    const heightStartPoint =
-      Math.round(
-        height / 2 - (rows / 2) * tileSize - (heightEven ? tileSize / 2 : 0)
-      ) +
-      borderHT / 2;
+
+    const heightStartPoint = 50;
 
     const points = [];
 
@@ -76,5 +83,5 @@ export const useTileStore = defineStore("tile", () => {
     points.value = result.points;
   };
 
-  return { tileSize, points, readyToPlay };
+  return { tileSize, points, readyToPlay, getDeviceType };
 });

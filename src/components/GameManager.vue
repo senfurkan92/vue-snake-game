@@ -4,6 +4,7 @@ import { useGameStore } from "../stores/gameStore";
 import { useTileStore } from "../stores/tileStore";
 import { useSnakeStore } from "../stores/snakeStore";
 import { usePreyStore } from "../stores/preyStore";
+import { ArrowUpIcon, ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/vue/24/solid'
 
 const tileStore = useTileStore();
 const gameStore = useGameStore();
@@ -25,5 +26,17 @@ onMounted(() => {
         <div class="bg-gray-300/50 rounded h-screen w-screen flex justify-center items-center">
             <span class="text-rose-500 font-extrabold text-4xl">PAUSED</span>
         </div>
+    </div>
+    <div v-if="tileStore.getDeviceType() == 'mobile'" class="absolute bottom-6 right-4">        
+        <div class="flex flex-col items-center gap-1">
+            <div>
+                <button class="btn btn-primary active:bg-secondary" @click="snakeStore.alterDirectionByDegree(90)"><ArrowUpIcon class="w-6 h-6" /></button>
+            </div>
+            <div class="flex gap-1">
+                <button class="btn btn-primary active:bg-secondary" @click="snakeStore.alterDirectionByDegree(180)"><ArrowLeftIcon class="w-6 h-6" /></button>
+                <button class="btn btn-primary active:bg-secondary" @click="snakeStore.alterDirectionByDegree(270)"><ArrowDownIcon class="w-6 h-6" /></button>
+                <button class="btn btn-primary active:bg-secondary" @click="snakeStore.alterDirectionByDegree(0)"><ArrowRightIcon class="w-6 h-6" /></button>
+            </div>
+        </div>     
     </div>
 </template>
