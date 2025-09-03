@@ -7,9 +7,7 @@ const preyStore = usePreyStore();
 const tileStore = useTileStore();
 
 onMounted(() => {
-  setTimeout(() => {
-    preyStore.putPrey()
-  }, 1100)
+
 })
 
 onUnmounted(() => {

@@ -7,8 +7,15 @@ export const usePreyStore = defineStore("prey", () => {
   const snakeStore = useSnakeStore();
   const tileStore = useTileStore();
 
-  const point = ref();
+  const point = ref(null);
   const available = ref(true);
+
+  const readyToPlay = () => {
+    point.value = null;
+    available.value = true;
+
+    putPrey()
+  }
 
   const putPrey = () => {
     if (point.value || !available) return;
@@ -24,7 +31,6 @@ export const usePreyStore = defineStore("prey", () => {
 
       if (availablePoints.length < 1) {
         available.value = false;
-        clearInterval(intervalId);
         return;
       }
 
@@ -37,5 +43,5 @@ export const usePreyStore = defineStore("prey", () => {
     putPrey();
   };
 
-  return { point, putPrey, beEaten };
+  return { point, readyToPlay, beEaten };
 });

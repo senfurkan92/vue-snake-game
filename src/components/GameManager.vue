@@ -1,9 +1,20 @@
 <script setup>
+import { onMounted } from "vue";
 import { useGameStore } from "../stores/gameStore";
+import { useTileStore } from "../stores/tileStore";
+import { useSnakeStore } from "../stores/snakeStore";
+import { usePreyStore } from "../stores/preyStore";
 
+const tileStore = useTileStore();
 const gameStore = useGameStore();
+const snakeStore = useSnakeStore();
+const preyStore = usePreyStore()
 
-const borderSpace = window.innerHeight / 20
+onMounted(() => {
+    tileStore.readyToPlay();
+    snakeStore.readyToPlay()
+    preyStore.readyToPlay()
+})
 </script>
 
 <template>

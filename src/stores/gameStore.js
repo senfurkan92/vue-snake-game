@@ -4,9 +4,12 @@ import { defineStore } from "pinia";
 export const useGameStore = defineStore("game", () => {
   const score = ref(0);
   const difficulty = ref(5);
+  const difficulties = ref([5,6,7,8,9,10]);
+  const size = ref(400)
+  const sizes = ref([200,300,400,500,600])
   const state = ref(1);
 
-  const snakeSpeed = computed(() => 1000 - difficulty.value * 100);
+  const snakeSpeed = computed(() => 1100 - difficulty.value * 100);
 
   const setStateWelcome = () => (state.value = 1);
 
@@ -26,6 +29,9 @@ export const useGameStore = defineStore("game", () => {
   return {
     score,
     difficulty,
+    difficulties,
+    size,
+    sizes,
     state,
     snakeSpeed,
     setStateWelcome,

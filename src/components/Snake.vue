@@ -83,8 +83,6 @@ function pause(e) {
 }
 
 onMounted(() => {
-  snakeStore.continuousMovement()
-
   window.addEventListener("keydown", snakeStore.alterDirection);
 
   window.addEventListener("keydown", pause);

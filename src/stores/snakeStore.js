@@ -10,14 +10,24 @@ export const useSnakeStore = defineStore("snake", () => {
   const gameStore = useGameStore();
 
   const counter = ref(0);
-  const points = ref([...tileStore.points.slice(0, 3).reverse()]);
+  const points = ref([]);
   const eatenMoments = ref([]);
   const direction = ref(0);
-  let intervalId = null;
+  let intervalId = ref(null);
+
+  const readyToPlay = () => {
+    counter.value = 0;
+    points.value = [...tileStore.points.slice(0, 3).reverse()];
+    eatenMoments.value = [];
+    direction.value = 0;
+    intervalId.value = null;
+
+    continuousMovement()
+  }
 
   const continuousMovement = () => {
     setTimeout(() => {
-      intervalId = setInterval(() => {
+      intervalId.value = setInterval(() => {
         if (gameStore.state != 2) return;
 
         let { col, row } = points.value[0].position;
@@ -32,7 +42,7 @@ export const useSnakeStore = defineStore("snake", () => {
         );
 
         if (!nextPoint) {
-          clearInterval(intervalId);
+          clearInterval(intervalId.value);
           gameStore.setStateOver()
           return;
         }
@@ -44,7 +54,7 @@ export const useSnakeStore = defineStore("snake", () => {
               x.position.row == nextPoint.position.row
           )
         ) {
-          clearInterval(intervalId);
+          clearInterval(intervalId.value);
           gameStore.setStateOver()
           return;
         }
@@ -121,7 +131,7 @@ export const useSnakeStore = defineStore("snake", () => {
   return {
     points,
     direction,
-    continuousMovement,
+    readyToPlay,
     alterDirection,
     getRealDirection,
   };
