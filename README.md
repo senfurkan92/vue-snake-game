@@ -1,5 +1,28 @@
-# Vue 3 + Vite
+# Snake Game 🐍
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A simple and responsive Snake Game built with **Vite + Vue 3** and **Pinia** for state management.  
+Play it directly here 👉 [Live Demo](https://snake.ef-games.net/)
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+---
+
+## ✨ Features
+- 🎮 Classic snake gameplay
+- 📱 Responsive design (works on mobile, tablet, and desktop)
+- ⚙️ Selectable difficulty levels
+- 🟩 Adjustable board size
+
+---
+
+## 🛠️ Tech Stack
+- [Vite](https://vitejs.dev/) – Fast development build tool  
+- [Vue 3](https://vuejs.org/) – Progressive JavaScript framework  
+- [Pinia](https://pinia.vuejs.org/) – Lightweight and intuitive state management  
+
+---
+
+## 🚀 Getting Started
+
+### Clone the repository
+```bash
+git clone https://github.com/senfurkan92/vue-snake-game.git
+cd vue-snake-game
