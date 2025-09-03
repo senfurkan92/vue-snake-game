@@ -71,9 +71,15 @@ function getSnakePart(point) {
       direction = fp.position.row === bp.position.row ? "r" : "u"
     }
   }
-  console.log(`/snake/${part}-${direction}.png`)
 
   return `/snake/${part}-${direction}.png`
+}
+
+function pause(e) {
+  if (e.key == "p" || e.key == 'P') {
+    if (gameStore.state == 2) gameStore.setStatePause()
+    else if (gameStore.state == 3) gameStore.setStatePlay()
+  }
 }
 
 onMounted(() => {
@@ -81,24 +87,18 @@ onMounted(() => {
 
   window.addEventListener("keydown", snakeStore.alterDirection);
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key == "p" || e.key == 'P') {
-      if (gameStore.state == 2) gameStore.setStatePause()
-      else if (gameStore.state == 3) gameStore.setStatePlay()
-    }
-  });
+  window.addEventListener("keydown", pause);
 })
 
 onUnmounted(() => {
   window.removeEventListener("keydown", snakeStore.alterDirection);
+
+  window.removeEventListener("keydown", pause);
 })
 
 </script>
 
 <template>
-  <div>
-      <b>SCORE:</b> {{ gameStore.score }}
-    </div>
   <template v-for="(p, i) in snakeStore.points" :key="i">
     <div class="snake" :style="{
       height: `${tileStore.tileSize * 1}px`,
@@ -108,10 +108,6 @@ onUnmounted(() => {
     }">
       <img :src="getSnakePart(p)" style="height: 100%; width: 100%; object-fit: contain;">
       </img>
-    </div>
-    <div v-if="gameStore.state == 3" 
-      style="position: absolute; top:50%; left: 50%; transform: translate(-50%,-50%);">
-      <h2><i style="text-decoration-line: underline;">PAUSED</i></h2>
     </div>
   </template>
 </template>
